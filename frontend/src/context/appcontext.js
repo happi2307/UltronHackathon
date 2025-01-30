@@ -8,27 +8,39 @@ export const AppProvider = ({ children }) => {
   // Global States
   const [user, setUser] = useState(null);
   const [transactions, setTransactions] = useState([]);
-  const [budget, setBudget] = useState([]);
+  const [budget, setBudget] = useState({
+    monthlyLimit: 0,
+    spent: 0,
+    categories: {},
+    savings: 0
+  });
   const [investments, setInvestments] = useState([]);
+  const [financialGoals, setFinancialGoals] = useState([]);
+  const [analytics, setAnalytics] = useState({
+    monthlySpending: [],
+    savingsRate: 0,
+    investmentReturns: 0
+  });
 
   // Fetch data (mocked example, replace with API calls)
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Mock API calls - Replace with real API calls
-        const userData = { name: "John Doe", email: "john@example.com" };
-        const transactionsData = [
-          { id: 1, title: "Grocery", amount: -50 },
-          { id: 2, title: "Salary", amount: 2000 },
-        ];
-        const budgetData = { monthlyLimit: 500, spent: 200 };
-        const investmentsData = [{ id: 1, type: "Stocks", amount: 1000 }];
+        // Replace with actual API calls
+        const userData = await fetch('/api/user');
+        const transactionsData = await fetch('/api/transactions');
+        const budgetData = await fetch('/api/budget');
+        const investmentsData = await fetch('/api/investments');
+        const analyticsData = await fetch('/api/analytics');
+        const goalsData = await fetch('/api/goals');
 
-        // Set states
+        // Set states with real data
         setUser(userData);
         setTransactions(transactionsData);
         setBudget(budgetData);
         setInvestments(investmentsData);
+        setAnalytics(analyticsData);
+        setFinancialGoals(goalsData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -44,10 +56,14 @@ export const AppProvider = ({ children }) => {
         transactions,
         budget,
         investments,
+        financialGoals,
+        analytics,
         setUser,
         setTransactions,
         setBudget,
         setInvestments,
+        setFinancialGoals,
+        setAnalytics
       }}
     >
       {children}
